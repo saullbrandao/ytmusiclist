@@ -1,0 +1,41 @@
+name: Build and Release Go CLI
+
+on:
+  push:
+    tags:
+      - 'v*.*.*' # Triggers on tags like v1.0.0
+permissions:
+  contents: write
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.3' 
+      - name: Set environment variables
+        run: |
+          echo "BINARY_NAME=ytmusiclist" >> $GITHUB_ENV
+          echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+      - name: Build for Windows
+        run: |
+          GOOS=windows GOARCH=amd64 go build -o release/${BINARY_NAME}-${VERSION}-windows-amd64.exe
+      - name: Build for Linux
+        run: |
+          GOOS=linux GOARCH=amd64 go build -o release/${BINARY_NAME}-${VERSION}-linux-amd64
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref }}
+          name: Release ${{ env.VERSION }}
+          draft: false
+          prerelease: false
+          files: |
+            release/${{ env.BINARY_NAME }}-${{ env.VERSION }}-windows-amd64.exe
+            release/${{ env.BINARY_NAME }}-${{ env.VERSION }}-linux-amd64
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

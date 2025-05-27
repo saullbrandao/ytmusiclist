@@ -95,8 +95,6 @@ func ensureYTDLP() (string, error) {
 	switch runtime.GOOS {
 	case "windows":
 		binName += ".exe"
-	case "darwin":
-		binName += "_macos"
 	case "linux":
 		binName += "_linux"
 	default:
