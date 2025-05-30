@@ -17,12 +17,16 @@ func main() {
 	err := ensureFFMPEG()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		fmt.Println("Press any key to exit")
+		bufio.NewReader(os.Stdin).ReadLine()
 		os.Exit(1)
 	}
 
 	ytdlpPath, err := ensureYTDLP()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		fmt.Println("Press any key to exit")
+		bufio.NewReader(os.Stdin).ReadLine()
 		os.Exit(1)
 	}
 
@@ -30,12 +34,16 @@ func main() {
 		userInput, err := getUserInput()
 		if err != nil {
 			fmt.Println(err)
+			fmt.Println("Press any key to exit")
+			bufio.NewReader(os.Stdin).ReadLine()
 			os.Exit(1)
 		}
 
 		err = downloadPlaylist(ytdlpPath, userInput)
 		if err != nil {
 			fmt.Println(err)
+			fmt.Println("Press any key to exit")
+			bufio.NewReader(os.Stdin).ReadLine()
 			os.Exit(1)
 		}
 

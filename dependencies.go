@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
 	"io"
@@ -21,13 +22,29 @@ func ensureFFMPEG() error {
 	// Download the correct binary based on the OS
 	switch runtime.GOOS {
 	case "windows":
-		installFFmpegWindows()
+		err = installFFmpegWindows()
+		fmt.Println("\nYou should restart the app to be able to use ffmpeg now")
+		fmt.Println("Press any key to exit and open the program again")
+		bufio.NewReader(os.Stdin).ReadLine()
+		os.Exit(1)
 	case "linux":
-		installFFmpegLinux()
+		err = installFFmpegLinux()
 	default:
-		fmt.Println("OS not supported")
+		fmt.Println("\nOS not supported")
+		fmt.Println("Press any key to exit")
+		bufio.NewReader(os.Stdin).ReadLine()
 		os.Exit(1)
 	}
+	if err != nil {
+		return errors.New(fmt.Sprintf("Error installing ffmpeg: %v", err))
+	}
+
+	_, err = exec.LookPath("ffmpeg")
+	if err != nil {
+		return errors.New("ffmpeg not found after install")
+	}
+
+	fmt.Println("FFmpeg installed!")
 
 	return nil
 }
@@ -59,6 +76,8 @@ func ensureYTDLP() (string, error) {
 		fileName += "_linux"
 	default:
 		fmt.Println("OS not supported")
+		fmt.Println("Press any key to exit")
+		bufio.NewReader(os.Stdin).ReadLine()
 		os.Exit(1)
 	}
 
@@ -116,11 +135,5 @@ func installFFmpeg(cmd *exec.Cmd) error {
 		return errors.New("Failed to install ffmpeg. You have to install ffmpeg manually.")
 	}
 
-	_, err = exec.LookPath("ffmpeg")
-	if err != nil {
-		return errors.New("ffmpeg not found after install")
-	}
-
-	fmt.Println("FFmpeg installed")
 	return nil
 }
