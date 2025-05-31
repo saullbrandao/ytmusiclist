@@ -21,8 +21,6 @@ func downloadPlaylist(ytdlpPath string, userInput UserInput) error {
 		"--no-simulate",
 		"--print",
 		"Downloading item %(playlist_index)s of %(playlist_count)s - %(title)s",
-		// "--progress-template",
-		// "download: [%(progress._percent_str)s] %(progress.eta)s",
 		"--download-archive",
 		userInput.dirName+"/downloaded.txt",
 		"-o",
