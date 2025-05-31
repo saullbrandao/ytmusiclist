@@ -38,12 +38,8 @@ ytmusiclist
 ## Requirements
 
 - Internet connection for downloading `yt-dlp`, `ffmpeg` and playlists
-- `yt-dlp` (automatically downloaded to `~/config/ytmusiclist/bin/` on linux and `%APPDATA%/ytmusiclist/bin/` if not on PATH)
+- `yt-dlp` (automatically downloaded to `~/config/ytmusiclist/bin/` on Linux and `%APPDATA%/ytmusiclist/bin/` on Windows if not on PATH)
 - `ffmpeg` (attempts to install it if not on PATH)
-
-## License
-
-MIT License. See [LICENSE](LICENSE) for details.
 
 ## Acknowledgments
 
