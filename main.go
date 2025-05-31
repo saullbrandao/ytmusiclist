@@ -6,6 +6,9 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/saullbrandao/ytmusiclist/dependencies"
+	"github.com/saullbrandao/ytmusiclist/utils"
 )
 
 type UserInput struct {
@@ -14,37 +17,29 @@ type UserInput struct {
 }
 
 func main() {
-	err := ensureFFMPEG()
+	err := dependencies.EnsureFFMPEG()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
-		fmt.Println("Press any key to exit")
-		bufio.NewReader(os.Stdin).ReadLine()
-		os.Exit(1)
+		utils.GracefulExit()
 	}
 
-	ytdlpPath, err := ensureYTDLP()
+	ytdlpPath, err := dependencies.EnsureYTDLP()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
-		fmt.Println("Press any key to exit")
-		bufio.NewReader(os.Stdin).ReadLine()
-		os.Exit(1)
+		utils.GracefulExit()
 	}
 
 	for {
 		userInput, err := getUserInput()
 		if err != nil {
 			fmt.Println(err)
-			fmt.Println("Press any key to exit")
-			bufio.NewReader(os.Stdin).ReadLine()
-			os.Exit(1)
+			utils.GracefulExit()
 		}
 
 		err = downloadPlaylist(ytdlpPath, userInput)
 		if err != nil {
 			fmt.Println(err)
-			fmt.Println("Press any key to exit")
-			bufio.NewReader(os.Stdin).ReadLine()
-			os.Exit(1)
+			utils.GracefulExit()
 		}
 
 		fmt.Println("\nPlaylist downloaded!")
@@ -55,7 +50,7 @@ func main() {
 func getUserInput() (UserInput, error) {
 	reader := bufio.NewReader(os.Stdin)
 
-	fmt.Print("\nEnter the directory name(Leave empty for current directory): ")
+	fmt.Print("\nEnter the directory name you want to use(Leave empty for current directory): ")
 	dirName, _ := reader.ReadString('\n')
 	dirName = strings.TrimSpace(dirName)
 
