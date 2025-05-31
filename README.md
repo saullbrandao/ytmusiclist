@@ -11,7 +11,7 @@ A Go CLI tool to download YouTube playlists as MP3 files for offline listening u
 ## Installation
 
 ### Option 1: Download Binary
-1. Visit the [Releases](https://github.com/yourusername/ytmusiclist/releases) page.
+1. Visit the [Releases](https://github.com/saullbrandao/ytmusiclist/releases) page.
 2. Download the appropriate binary for your OS 
 
 ### Option 2: Build from Source
